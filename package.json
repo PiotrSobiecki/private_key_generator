@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "crypto": "^1.0.1",
+    "ethereumjs-wallet": "^1.0.2",
+    "hdkey": "^2.1.0",
+    "util": "^0.12.5"
+  }
+}
