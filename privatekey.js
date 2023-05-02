@@ -56,14 +56,14 @@ var rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
-rl.question('Ile kluczy chcesz wygenerować? ', function (numKeys) { return __awaiter(void 0, void 0, void 0, function () {
+rl.question('How many private keys you wish to generate? ', function (numKeys) { return __awaiter(void 0, void 0, void 0, function () {
     var num, i, _a, address, privateKey;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 num = parseInt(numKeys);
                 if (isNaN(num) || num <= 0 || num > 1000) {
-                    console.log('Nieprawidłowa liczba kluczy. Wpisz liczbę od 1 do 1000.');
+                    console.log('Incorrect number of keys. Enter a number from 1 to 1000.');
                     rl.close();
                     return [2 /*return*/];
                 }

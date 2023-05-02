@@ -16,11 +16,11 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-rl.question('Ile kluczy chcesz wygenerować? ', async (numKeys: string) => {
+rl.question('How many private keys you wish to generate? ', async (numKeys: string) => {
   const num = parseInt(numKeys);
 
   if (isNaN(num) || num <= 0 || num > 1000) {
-    console.log('Nieprawidłowa liczba kluczy. Wpisz liczbę od 1 do 1000.');
+    console.log('Incorrect number of keys. Enter a number from 1 to 1000.');
     rl.close();
     return;
   }
