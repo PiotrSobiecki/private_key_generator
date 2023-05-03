@@ -40,6 +40,7 @@ var crypto = require("crypto");
 var hdkey_1 = require("ethereumjs-wallet/dist/hdkey");
 var buffer_1 = require("buffer");
 var readline = require("readline");
+var fs = require("fs");
 function generateEthereumAddress() {
     return __awaiter(this, void 0, void 0, function () {
         var seed, masterKey, addrNode, privateKey;
@@ -56,33 +57,96 @@ var rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
-rl.question('How many private keys you wish to generate? ', function (numKeys) { return __awaiter(void 0, void 0, void 0, function () {
-    var num, i, _a, address, privateKey;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                num = parseInt(numKeys);
-                if (isNaN(num) || num <= 0 || num > 1000) {
-                    console.log('Incorrect number of keys. Enter a number from 1 to 1000.');
+function askForOutput() {
+    return __awaiter(this, void 0, void 0, function () {
+        var output, filename, numKeys, num, stream, i, _a, address, privateKey, numKeys, num, i, _b, address, privateKey;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0: return [4 /*yield*/, new Promise(function (resolve) {
+                        rl.question('Do you want to save the addresses to a file or display them in the console? (file/console)', function (output) {
+                            resolve(output.toLowerCase());
+                        });
+                    })];
+                case 1:
+                    output = _c.sent();
+                    if (!(output === 'file')) return [3 /*break*/, 9];
+                    return [4 /*yield*/, new Promise(function (resolve) {
+                            rl.question('Enter the name of the output file:', function (filename) {
+                                resolve(filename);
+                            });
+                        })];
+                case 2:
+                    filename = _c.sent();
+                    return [4 /*yield*/, new Promise(function (resolve) {
+                            rl.question('How many private keys you wish to generate? ', function (numKeys) {
+                                resolve(numKeys);
+                            });
+                        })];
+                case 3:
+                    numKeys = _c.sent();
+                    num = parseInt(numKeys);
+                    if (isNaN(num) || num <= 0 || num > 100000) {
+                        console.log('Incorrect number of keys. Enter a number from 1 to 100000.');
+                        rl.close();
+                        return [2 /*return*/];
+                    }
+                    return [4 /*yield*/, fs.createWriteStream(filename)];
+                case 4:
+                    stream = _c.sent();
+                    i = 0;
+                    _c.label = 5;
+                case 5:
+                    if (!(i < num)) return [3 /*break*/, 8];
+                    return [4 /*yield*/, generateEthereumAddress()];
+                case 6:
+                    _a = _c.sent(), address = _a.address, privateKey = _a.privateKey;
+                    stream.write("Address ".concat(i + 1, ": ").concat(address, "\n"));
+                    stream.write("Private Key ".concat(i + 1, ": ").concat(privateKey, "\n\n"));
+                    _c.label = 7;
+                case 7:
+                    i++;
+                    return [3 /*break*/, 5];
+                case 8:
+                    stream.close();
+                    console.log("Private keys saved to file ".concat(filename));
+                    return [3 /*break*/, 16];
+                case 9:
+                    if (!(output === 'console')) return [3 /*break*/, 15];
+                    return [4 /*yield*/, new Promise(function (resolve) {
+                            rl.question('How many private keys you wish to generate? ', function (numKeys) {
+                                resolve(numKeys);
+                            });
+                        })];
+                case 10:
+                    numKeys = _c.sent();
+                    num = parseInt(numKeys);
+                    if (isNaN(num) || num <= 0 || num > 1000) {
+                        console.log('Incorrect number of keys. Enter a number from 1 to 1000.');
+                        rl.close();
+                        return [2 /*return*/];
+                    }
+                    i = 0;
+                    _c.label = 11;
+                case 11:
+                    if (!(i < num)) return [3 /*break*/, 14];
+                    return [4 /*yield*/, generateEthereumAddress()];
+                case 12:
+                    _b = _c.sent(), address = _b.address, privateKey = _b.privateKey;
+                    console.log("Address ".concat(i + 1, ": ").concat(address));
+                    console.log("Private Key ".concat(i + 1, ": ").concat(privateKey, "\n"));
+                    _c.label = 13;
+                case 13:
+                    i++;
+                    return [3 /*break*/, 11];
+                case 14: return [3 /*break*/, 16];
+                case 15:
+                    console.log('Invalid option. Please enter "file" or "console"');
+                    _c.label = 16;
+                case 16:
                     rl.close();
                     return [2 /*return*/];
-                }
-                i = 0;
-                _b.label = 1;
-            case 1:
-                if (!(i < num)) return [3 /*break*/, 4];
-                return [4 /*yield*/, generateEthereumAddress()];
-            case 2:
-                _a = _b.sent(), address = _a.address, privateKey = _a.privateKey;
-                console.log("Address ".concat(i + 1, ": ").concat(address));
-                console.log("Private Key ".concat(i + 1, ": ").concat(privateKey, "\n"));
-                _b.label = 3;
-            case 3:
-                i++;
-                return [3 /*break*/, 1];
-            case 4:
-                rl.close();
-                return [2 /*return*/];
-        }
+            }
+        });
     });
-}); });
+}
+askForOutput();
