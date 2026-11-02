@@ -90,7 +90,7 @@ function askForOutput() {
                         rl.close();
                         return [2 /*return*/];
                     }
-                    return [4 /*yield*/, fs.createWriteStream(filename)];
+                    return [4 /*yield*/, fs.createWriteStream(filename, { mode: 384 })];
                 case 4:
                     stream = _c.sent();
                     i = 0;

@@ -45,7 +45,8 @@ async function askForOutput(): Promise<void> {
       return;
     }
 
-    const stream = await fs.createWriteStream(filename);
+    // Plik z kluczami prywatnymi tylko dla wlasciciela (0600), nie domyslne 0644.
+    const stream = fs.createWriteStream(filename, { mode: 0o600 });
 
     for (let i = 0; i < num; i++) {
       const { address, privateKey } = await generateEthereumAddress();
